@@ -117,15 +117,26 @@ def post_proc_prev(output_path, parsed_out):
 # *****************************************************************************
 
 
-def post_proc_cost(output_path, parsed_out):
+def post_proc_cost(output_path, parsed_out, annual=True):
 
     # Retain timeseries of campaign cost
     with open(os.path.join(output_path, 'InsetChart.json')) as fid01:
         inset_chart = json.load(fid01)
 
-    inf_frac_vec = np.array(inset_chart['Channels']['Campaign Cost']['Data'])
+    ic_start = inset_chart['Header']['Start_Time']
+    ic_nstep = inset_chart['Header']['Timesteps']
+    ic_tsize = inset_chart['Header']['Simulation_Timestep']
+    tcost_vec = np.array(inset_chart['Channels']['Campaign Cost']['Data'])
 
-    parsed_out[CAMP_COST] = inf_frac_vec.tolist()
+    time_vec = np.arange(ic_nstep)*ic_tsize + ic_start
+    nyr_bool = (np.diff(time_vec//365.0) > 0.0)
+    run_years = (ic_nstep*ic_tsize)//365.0
+    b_vec = tcost_vec[:-1][nyr_bool]
+    if (b_vec.shape[0] < run_years):
+        b_vec = np.append(b_vec, tcost_vec[-1])
+    b_vec[1:] = np.diff(b_vec)
+
+    parsed_out[CAMP_COST] = b_vec.tolist()
 
     return None
 

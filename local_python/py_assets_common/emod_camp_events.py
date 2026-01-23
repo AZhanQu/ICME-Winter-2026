@@ -238,6 +238,7 @@ def ce_RI(node_list,
     camp_iv03.Delay_Period_Gaussian_Std_Dev = age_std
 
     camp_iv04.Acquire_Config.Initial_Effect = 1.0
+    camp_iv04.Cost_To_Consumer = 0.0
     camp_iv04.Vaccine_Take = base_take
     camp_iv04.Take_Reduced_By_Acquire_Immunity = acq_fact
 
@@ -257,6 +258,7 @@ def ce_RI(node_list,
         camp_iv05.Delay_Period_Gaussian_Std_Dev = age_std
 
         camp_iv06.Acquire_Config.Initial_Effect = 1.0
+        camp_iv06.Cost_To_Consumer = 0.0
         camp_iv06.Vaccine_Take = base_take
         camp_iv06.Take_Reduced_By_Acquire_Immunity = acq_fact
 
@@ -332,17 +334,20 @@ def ce_SIA(node_list,
     camp_nodes.Node_List = node_list
 
     camp_coord.Intervention_Config = camp_iv01
+    camp_coord.Cost_Assumes_Total_Coverage = 1
     camp_coord.Target_Demographic = 'ExplicitAgeRanges'
     camp_coord.Demographic_Coverage = coverage
     camp_coord.Target_Age_Min = yrs_min
     camp_coord.Target_Age_Max = yrs_max
 
     camp_iv01.Actual_IndividualIntervention_Configs = [camp_iv02]
+    camp_iv01.Cost_To_Consumer = 1.0
     camp_iv01.Delay_Period_Distribution = "UNIFORM_DISTRIBUTION"
     camp_iv01.Delay_Period_Min = 0.0
     camp_iv01.Delay_Period_Max = 14.0
 
     camp_iv02.Acquire_Config.Initial_Effect = 1.0
+    camp_iv02.Cost_To_Consumer = 0.0
     camp_iv02.Vaccine_Take = base_take
     camp_iv02.Take_Reduced_By_Acquire_Immunity = acq_fact
 
